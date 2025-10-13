@@ -23,5 +23,5 @@ export default function () {
   const res = http.get(url);
   validateWeatherResponse(res)
 
-  sleep(1);
+  sleep(1);
 }
