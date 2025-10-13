@@ -1,8 +1,8 @@
 import http from "k6/http";
 import { sleep } from "k6";
-import { cities } from "./helpers/cities.js";
-import { BASE_URL } from "./helpers/config.js";
-import { validateWeatherResponse } from "./helpers/checks.js"
+import { cities } from "../helpers/cities.js";
+import { BASE_URL } from "../helpers/config.js";
+import { validateWeatherResponse } from "../helpers/checks.js"
 
 export const options = {
   stages: [
