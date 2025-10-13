@@ -1,7 +1,7 @@
 import http from "k6/http";
 import { check, sleep } from "k6";
-import { cities } from "./helpers/cities.js";
-import { BASE_URL, THRESHOLDS } from "./helpers/config.js";
+import { cities } from "../helpers/cities.js";
+import { BASE_URL, THRESHOLDS } from "../helpers/config.js";
 
 export const options = {
   vus: 1,
