@@ -25,44 +25,23 @@ export const options = {
   },
 };
 
-let totalRequests = 0;
-let totalFailures = 0;
-let saturationDetected = false;
-
 export default function () {
   const city = cities[Math.floor(Math.random() * cities.length)];
   const url = `${BASE_URL}?latitude=${city.lat}&longitude=${city.lon}${DEFAULT_PARAMS}`;
   const res = http.get(url);
 
-  // ✅ Alimenta métricas customizadas
-  totalRequests++;
-  responseTime.add(res.timings.duration);
-  successRate.add(res.status === 200);
+  responseTime.add(res.timings.duration);   
+  successRate.add(res.status === 200);         
+  if (res.status !== 200) errorCount.add(1);
 
-  if (res.status !== 200) {
-    errorCount.add(1);
-    totalFailures++;
-  }
-
-  // ✅ Check básico (não reprova o stress test)
   check(res, {
     "status é 200 ou 429": (r) => r.status === 200 || r.status === 429,
-    "resposta abaixo de 4s": (r) => r.timings.duration < 4000,
+    "resposta abaixo de 2s": (r) => r.timings.duration < 2000,
   });
-
-  // ⚠️ Detecção dinâmica de saturação
-  const failureRate = totalFailures / totalRequests;
-  if (!saturationDetected && failureRate > 0.5) {
-    saturationDetected = true;
-    console.warn(
-      `⚠️ Saturação detectada em ${__VU} VUs — taxa de falha: ${(failureRate * 100).toFixed(2)}%`
-    );
-  }
 
   sleep(1);
 }
 
-// 🧾 Geração do relatório HTML
 export function handleSummary(data) {
-  return generateReport("stress-report.html", data);
+  return generateReport('stress-report.html', data);
 }
