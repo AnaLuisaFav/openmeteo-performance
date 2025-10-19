@@ -1,6 +1,7 @@
 import http from "k6/http";
 import { sleep, check } from "k6";
 import { cities } from "../helpers/cities.js";
+import { generateReport } from '../utils/reports.js';
 import { BASE_URL, DEFAULT_PARAMS } from "../helpers/config.js";
 
 export const options = {
@@ -27,4 +28,8 @@ export default function () {
   });
 
   sleep(1);
+}
+
+export function handleSummary(data) {
+  return generateReport('stress-report.html', data);
 }
