@@ -1,6 +1,7 @@
 import http from "k6/http";
 import { sleep } from "k6";
 import { cities } from "../helpers/cities.js";
+import { generateReport } from '../utils/reports.js';
 import { validateWeatherResponse } from "../helpers/checks.js"
 import { BASE_URL, DEFAULT_PARAMS } from "../helpers/config.js";
 
@@ -21,4 +22,8 @@ export default function () {
   validateWeatherResponse(res);
 
   sleep(1);
+}
+
+export function handleSummary(data) {
+  return generateReport('smoke-report.html', data);
 }
